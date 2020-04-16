@@ -8,7 +8,7 @@ cogname = "Emojif"
 cogsource = "https://github.com/T3CHNOLOG1C/SpaceCogs/blob/master/emojif.py"
 coglicense = "Apache"
 
-class Emojif:
+class Emojif(commands.Cog):
 
     """
     Replace the messages of non-nitro users that should contain animated
