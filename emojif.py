@@ -18,10 +18,10 @@ class Emojif(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         try:
-            with open("data/emojif.json") as f:
+            with open("database/emojif.json") as f:
                 self.emojif_settings = load(f)
         except FileNotFoundError:
-            with open("data/emojif.json", "w") as f:
+            with open("database/emojif.json", "w") as f:
                 f.write('{}')
         try:
             self.emojif_active = self.emojif_settings['status']
@@ -41,7 +41,7 @@ class Emojif(commands.Cog):
 
         member = str(ctx.message.author.id)
         try:
-            with open("data/emojif.json") as f:
+            with open("database/emojif.json") as f:
                 js = load(f)
         except FileNotFoundError:
             js = {}
@@ -60,7 +60,7 @@ class Emojif(commands.Cog):
             self.emojif_settings[member] = True
             msg = "Your messages containing animated emotes will now be replaced."
 
-        with open("data/emojif.json", "w") as f:
+        with open("database/emojif.json", "w") as f:
             dump(js, f, sort_keys=True, indent=4, separators=(',', ': '))
 
         return await ctx.send("<@{}> {}".format(member, msg))
@@ -82,7 +82,7 @@ class Emojif(commands.Cog):
         """Globally enable or disable Emojif. (Mods only)"""
 
         try:
-            with open("data/emojif.json") as f:
+            with open("database/emojif.json") as f:
                 js = load(f)
         except FileNotFoundError:
             js = {}
@@ -101,11 +101,12 @@ class Emojif(commands.Cog):
             self.emojif_active = False
             msg = "Emojif is now globally disabled."
 
-        with open("data/emojif.json", "w") as f:
+        with open("database/emojif.json", "w") as f:
             dump(js, f, sort_keys=True, indent=4, separators=(',', ': '))
 
         return await ctx.send(msg)
 
+    @commands.Cog.listener()
     async def on_message(self, message):
         """
         Replace messages that should contain animated emojis with
